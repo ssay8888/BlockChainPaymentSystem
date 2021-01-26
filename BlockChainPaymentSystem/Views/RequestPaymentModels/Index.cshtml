@@ -1,0 +1,83 @@
+﻿@model IEnumerable<BlockChainPaymentSystem.Models.JsonModels.RequestPaymentModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.price_amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.price_currency)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.pay_amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.pay_currency)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.order_id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.order_description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ipn_callback_url)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.fixed_rate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Case)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.price_amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.price_currency)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.pay_amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.pay_currency)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.order_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.order_description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ipn_callback_url)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.fixed_rate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Case)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

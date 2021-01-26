@@ -1,0 +1,73 @@
+﻿@model BlockChainPaymentSystem.Models.JsonModels.RequestPaymentModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>RequestPaymentModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="price_amount" class="control-label"></label>
+                <input asp-for="price_amount" class="form-control" />
+                <span asp-validation-for="price_amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="price_currency" class="control-label"></label>
+                <input asp-for="price_currency" class="form-control" />
+                <span asp-validation-for="price_currency" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="pay_amount" class="control-label"></label>
+                <input asp-for="pay_amount" class="form-control" />
+                <span asp-validation-for="pay_amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="pay_currency" class="control-label"></label>
+                <input asp-for="pay_currency" class="form-control" />
+                <span asp-validation-for="pay_currency" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="order_id" class="control-label"></label>
+                <input asp-for="order_id" class="form-control" />
+                <span asp-validation-for="order_id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="order_description" class="control-label"></label>
+                <input asp-for="order_description" class="form-control" />
+                <span asp-validation-for="order_description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ipn_callback_url" class="control-label"></label>
+                <input asp-for="ipn_callback_url" class="form-control" />
+                <span asp-validation-for="ipn_callback_url" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="fixed_rate" /> @Html.DisplayNameFor(model => model.fixed_rate)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Case" class="control-label"></label>
+                <input asp-for="Case" class="form-control" />
+                <span asp-validation-for="Case" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

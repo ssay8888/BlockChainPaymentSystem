@@ -1,0 +1,33 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "type": "mssql.local",
+      "connectionId": "IPNModelsContext"
+    },
+    "secrets1": {
+      "type": "secrets.user"
+    },
+    "mssql2": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/sgblock/databases/sgblock",
+      "type": "mssql.azure",
+      "connectionId": "AzureDB",
+      "secretStore": "LocalSecretsFile"
+    },
+    "mssql3": {
+      "type": "mssql.local",
+      "connectionId": "RequestPaymentModelsContext"
+    },
+    "mssql4": {
+      "type": "mssql.local",
+      "connectionId": "ResponsePaymentModelContext"
+    },
+    "mssql5": {
+      "type": "mssql.local",
+      "connectionId": "RequestPaymentModelContext"
+    },
+    "mssql6": {
+      "type": "mssql.local",
+      "connectionId": "IPNModelContext"
+    }
+  }
+}

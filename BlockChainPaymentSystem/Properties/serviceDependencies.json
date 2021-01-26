@@ -1,0 +1,31 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "type": "mssql",
+      "connectionId": "IPNModelsContext"
+    },
+    "secrets1": {
+      "type": "secrets"
+    },
+    "mssql2": {
+      "type": "mssql",
+      "connectionId": "AzureDB"
+    },
+    "mssql3": {
+      "type": "mssql",
+      "connectionId": "RequestPaymentModelsContext"
+    },
+    "mssql4": {
+      "type": "mssql",
+      "connectionId": "ResponsePaymentModelContext"
+    },
+    "mssql5": {
+      "type": "mssql",
+      "connectionId": "RequestPaymentModelContext"
+    },
+    "mssql6": {
+      "type": "mssql",
+      "connectionId": "IPNModelContext"
+    }
+  }
+}

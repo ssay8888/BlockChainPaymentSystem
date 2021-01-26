@@ -1,0 +1,72 @@
+﻿@model BlockChainPaymentSystem.Models.JsonModels.RequestPaymentModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>RequestPaymentModel</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.price_amount)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.price_amount)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.price_currency)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.price_currency)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.pay_amount)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.pay_amount)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.pay_currency)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.pay_currency)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.order_id)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.order_id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.order_description)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.order_description)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ipn_callback_url)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ipn_callback_url)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.fixed_rate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.fixed_rate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Case)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Case)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

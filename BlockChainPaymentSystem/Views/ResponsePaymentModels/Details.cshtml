@@ -1,0 +1,120 @@
+﻿@model BlockChainPaymentSystem.Models.JsonModels.ResponsePaymentModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>ResponsePaymentModel</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.payment_id)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.payment_id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.payment_status)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.payment_status)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.pay_address)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.pay_address)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.price_amount)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.price_amount)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.price_currency)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.price_currency)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.pay_amount)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.pay_amount)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.pay_currency)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.pay_currency)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.actually_paid)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.actually_paid)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.order_id)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.order_id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.order_description)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.order_description)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.payin_extra_id)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.payin_extra_id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ipn_callback_url)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ipn_callback_url)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.created_at)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.created_at)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.updated_at)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.updated_at)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.purchase_id)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.purchase_id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.outcome_amount)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.outcome_amount)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.outcome_currency)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.outcome_currency)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

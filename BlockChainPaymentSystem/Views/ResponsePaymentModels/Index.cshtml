@@ -1,0 +1,131 @@
+﻿@model IEnumerable<BlockChainPaymentSystem.Models.JsonModels.ResponsePaymentModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.payment_id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.payment_status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.pay_address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.price_amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.price_currency)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.pay_amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.pay_currency)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.actually_paid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.order_id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.order_description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.payin_extra_id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ipn_callback_url)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.created_at)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.updated_at)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.purchase_id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.outcome_amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.outcome_currency)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.payment_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.payment_status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.pay_address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.price_amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.price_currency)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.pay_amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.pay_currency)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.actually_paid)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.order_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.order_description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.payin_extra_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ipn_callback_url)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.created_at)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.updated_at)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.purchase_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.outcome_amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.outcome_currency)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

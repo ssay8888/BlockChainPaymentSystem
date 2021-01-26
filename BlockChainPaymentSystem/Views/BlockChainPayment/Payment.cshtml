@@ -1,0 +1,267 @@
+﻿@using System.Text
+@model BlockChainPaymentSystem.Models.JsonModels.ResponsePaymentModel
+
+@{
+    var currencies = new Dictionary<string, string>()
+    {
+        { "btc", "비트코인" },
+        { "ltc", "라이트코인" },
+        { "eth", "이더리움" },
+        { "xmr", "모네르" },
+    };
+    var dropDownListItem = new List<SelectListItem>();
+    foreach (var currencie in currencies)
+    {
+        dropDownListItem.Add(new SelectListItem() { Selected = true, Value= currencie.Key, Text = currencie.Value });
+    }
+}
+<style>
+
+    #walletAddressBox {
+        border: 1px solid;
+        border-color: #eeeeee;
+        padding: 3px;
+        width: 500px;
+        height: 37px;
+        margin: 0px;
+        background-color: #f4f4f4;
+    }
+
+    .wallet {
+        font-size: 9px;
+        margin-left: 15px;
+        margin-top: 2px;
+        color: #888888;
+    }
+    .container-btn{
+        vertical-align: bottom;
+        cursor:pointer;
+    }
+    .container-payList {
+        display: inline;
+    }
+    .payList {
+        width: 180px;
+        float: right;
+        display: inline-block;
+    }
+
+        .payList p {
+            display: inline-block;
+            margin: 3px;
+            padding: 0px;
+        }
+
+    .krM {
+        margin: 15px 15px 5px 15px;
+        display: inline-block;
+    }
+
+        .krM h2 {
+            display: inline;
+            font-size: 15px;
+            font-weight: bold;
+            margin: 0px;
+        }
+
+
+    body {
+        background-color: #f8f8f8;
+    }
+
+    .currencieText {
+        margin: 5px;
+        display: inline;
+    }
+
+    .coinKrName {
+        color: #5e5e5e;
+    }
+
+    .currencieText {
+        color: #6694b2;
+    }
+
+    .btn {
+    }
+
+        .btn #btncopy {
+        }
+
+        .btn #btnrecharge {
+        }
+
+    .container-event {
+        position: relative;
+        width: 495px;
+        height: 150px;
+        margin: 6px 6px 0px 6px;
+        background-color: #f8f8f8;
+    }
+
+        .container-event #event {
+            position: absolute;
+            width: auto;
+            height: auto;
+            top: 50%;
+            left: 50%;
+            margin: -59px 0 0 -55px;
+        }
+
+    .container-cash {
+        border: 1px solid #98bed6;
+        background-color: #98bed6;
+        margin-left: 15px;
+        margin-right: 15px;
+        width: 477px;
+        height: 66px;
+        align-content: center;
+    }
+
+        .container-cash h2 {
+            font-size: 16px;
+            font-weight: bold;
+            color: #f8f8f8;
+            margin-top: 23px;
+        }
+
+    div h3 {
+        font-size: 14px;
+        color: #888888;
+        margin: 0px;
+    }
+
+    .container-warning {
+        margin: 17px;
+    }
+
+        .container-warning h3 {
+            font-size: 9px;
+            color: #888888;
+            margin-top:
+        }
+</style>
+<script>
+    function copy(n) {
+        var t = document.getElementById(n).getElementsByTagName("h2")[0].innerText;
+        window.clipboardData.setData("Text", t);
+        alert("주소가 복사 되었습니다.")
+    }
+
+    function get_rate(currency) {
+        $.ajax({
+            url: ("/Payment/exchangerate?amount=1&currency_from=!&currency_to=usd&").replace('!', currency),
+            success: function (res) {
+                alert('현재 1 ' + currency + ' 당 환율은 ' + res.estimated_amount + ' 원 입니다.');
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        var walletURl = "/Payment/PayPost?currency=BTC";
+        $(".eth").css("display", "none");
+        $(".ltc").css("display", "none");
+        $(".xmr").css("display", "none");
+        $.ajax({
+            url: walletURl,
+            success: function (response) {
+                $(".btc .wallet").text(response.pay_address);
+            }
+        });
+        $("#dropDownListItem").change(function () {
+            switch ($(this).val()) {
+                case "btc":
+                    $(".btc").css("display", "block");
+                    $(".eth").css("display", "none");
+                    $(".ltc").css("display", "none");
+                    $(".xmr").css("display", "none");
+                    break;
+                case "eth":
+                    $(".btc").css("display", "none");
+                    $(".eth").css("display", "block");
+                    $(".ltc").css("display", "none");
+                    $(".xmr").css("display", "none");
+                    var walletURl = "/Payment/PayPost?currency=eth";
+                    $.ajax({
+                        url: walletURl,
+                        success: function (response) {
+                            $(".eth .wallet").text(response.pay_address);
+                        }
+                    });
+                    break;
+                case "ltc":
+                    $(".btc").css("display", "none");
+                    $(".eth").css("display", "none");
+                    $(".ltc").css("display", "block");
+                    $(".xmr").css("display", "none");
+                    var walletURl = "/Payment/PayPost?currency=ltc";
+                    $.ajax({
+                        url: walletURl,
+                        success: function (response) {
+                            $(".ltc .wallet").text(response.pay_address);
+                        }
+                    });
+                    break;
+                case "xmr":
+                    $(".btc").css("display", "none");
+                    $(".eth").css("display", "none");
+                    $(".ltc").css("display", "none");
+                    $(".xmr").css("display", "block");
+                    var walletURl = "/Payment/PayPost?currency=xmr";
+                    $.ajax({
+                        url: walletURl,
+                        success: function (response) {
+                            $(".xmr .wallet").text(response.pay_address);
+                        }
+                    });
+                    break;
+            }
+        });
+    });
+</script>
+<div>
+    <img src="~/images/header.png" style="margin:0px; display:block;" />
+</div>
+
+
+<div>
+    <div class="container-payList" style="width:509px;">
+        <div class="payList">
+            <p>충전방식 @Html.DropDownListFor(m => dropDownListItem, dropDownListItem, new { @class = "dropDownListItem" })</p>
+        </div>
+    </div>
+    @foreach (var currencie in currencies)
+    {
+
+        <div class="@currencie.Key" id="@currencie.Key">
+            <div class="krM">
+                <h2 class="coinKrName">@currencie.Value </h2>
+                <h2 class="currencieText">전용 계좌</h2>
+                <h2 class="coinKrName">입금주소</h2>
+            </div>
+            <div id="walletAddressBox">
+                <h2 class="wallet" style="font-weight:bold">@(currencie.Key.Equals("btc") ? "지갑주소를 불러오는 중..." : "" )</h2>
+            </div>
+            @*Html.Label("입금주소"): @Model.pay_address <br />
+                @Html.Label("통화"): @Model.pay_currency <br />
+                @Html.Label("결제요청시간"): @Model.created_at <br />
+                @Html.Label("결제상태"): @Model.payment_status*@
+            <div class="container-btn" style="display: inline;">
+                <img id="btncopy" src="~/images/CopyAddress.png" style="margin:3px 1px 3px 7px; display:inline;" onclick="copy('@currencie.Key')" />
+                <img id="btnrecharge" src="~/images/Recharge.png" style="margin:3px -3px 3px -3px; display:inline;" onclick="" />
+                <img id="btnexchange" src="~/images/ExchangeRate.png" style="margin:3px 0px 3px 0px; display:inline;" onclick="get_rate('@currencie.Key')" />
+            </div>
+        </div>
+    }
+</div>
+<div class="container-event">
+        <img id="event" src="~/images/eventimage.png" />
+</div>
+<div class="container-cash" style="text-align: center;">
+    <h2>현재 보유한 캐시 금액은 0원 입니다.</h2>
+</div>
+<div class="container-warning">
+    <h3>* 전용 지갑은 회원님에게 각각 부여되는 가상의 지갑으로 비트코인을</h3>
+    <h3>전용 계좌로 입금하시면 회원님의 아이디로 캐시가 충전됩니다.</h3>  
+    <h3 style="color:#6694b2; font-weight:bold;">* 거래소 시스템 사정으로 인해 입금 후 충전 완료까지 시간이 소요될 수 있습니다.</h3>
+</div>
