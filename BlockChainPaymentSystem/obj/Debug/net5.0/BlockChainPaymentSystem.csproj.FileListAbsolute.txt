@@ -176,4 +176,10 @@ D:\BlockChainPaymentSystem\BlockChainPaymentSystem\obj\Debug\net5.0\Razor\Views\
 D:\BlockChainPaymentSystem\BlockChainPaymentSystem\obj\Debug\net5.0\Razor\Views\ResponsePaymentModels\Details.cshtml.g.cs
 D:\BlockChainPaymentSystem\BlockChainPaymentSystem\obj\Debug\net5.0\Razor\Views\ResponsePaymentModels\Edit.cshtml.g.cs
 D:\BlockChainPaymentSystem\BlockChainPaymentSystem\obj\Debug\net5.0\Razor\Views\ResponsePaymentModels\Index.cshtml.g.cs
+D:\BlockChainPaymentSystem\BlockChainPaymentSystem\bin\Debug\net5.0\MoreLinq.dll
+D:\BlockChainPaymentSystem\BlockChainPaymentSystem\bin\Debug\net5.0\NetCoreServer.dll
+D:\BlockChainPaymentSystem\BlockChainPaymentSystem\bin\Debug\net5.0\HtmlAgilityPack.dll
 D:\BlockChainPaymentSystem\BlockChainPaymentSystem\obj\Debug\net5.0\BlockChainPaymentSystem.csprojAssemblyReference.cache
+D:\BlockChainPaymentSystem\BlockChainPaymentSystem\obj\Debug\net5.0\Razor\Views\CultureLand\Index.cshtml.g.cs
+D:\BlockChainPaymentSystem\BlockChainPaymentSystem\obj\Debug\net5.0\Razor\Views\CultureLand\Charge.cshtml.g.cs
+D:\BlockChainPaymentSystem\BlockChainPaymentSystem\bin\Debug\net5.0\WebDriver.dll

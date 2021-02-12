@@ -29,6 +29,6 @@ namespace BlockChainPaymentSystem.Models.JsonModels
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public bool fixed_rate { get; set; } = false;
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string Case { get; set; } = "fail";
+        public string Case { get; set; }
     }
 }

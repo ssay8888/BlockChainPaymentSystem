@@ -1,20 +1,19 @@
 ﻿@using System.Text
+@using BlockChainPaymentSystem.Constants;
+@using BlockChainPaymentSystem.Constants.MapleInfoStorage
 @model BlockChainPaymentSystem.Models.JsonModels.ResponsePaymentModel
 
-@{
-    var currencies = new Dictionary<string, string>()
-    {
-        { "btc", "비트코인" },
-        { "ltc", "라이트코인" },
-        { "eth", "이더리움" },
-        { "xmr", "모네르" },
-    };
+@{ // 사용가능한 코인 정렬
+    var currencies = await SettingConstants.AvailableCurrencies();
     var dropDownListItem = new List<SelectListItem>();
+    var sb = new StringBuilder(); // ajax 
     foreach (var currencie in currencies)
     {
-        dropDownListItem.Add(new SelectListItem() { Selected = true, Value= currencie.Key, Text = currencie.Value });
+        sb.AppendLine("$(\"." + currencie.Key + "\").css(\"display\", (value == \"" + currencie.Key + "\" ? \"block\" : \"none\"));");
+        dropDownListItem.Add(new SelectListItem() { Selected = true, Value = currencie.Key, Text = currencie.Value });
     }
 }
+
 <style>
 
     #walletAddressBox {
@@ -33,13 +32,23 @@
         margin-top: 2px;
         color: #888888;
     }
-    .container-btn{
-        vertical-align: bottom;
-        cursor:pointer;
+
+    #minimum-amount {
+        font-size: 9px;
+        margin-left: 15px;
+        margin-bottom: 0px;
+        color: #888888;
     }
+
+    .container-btn {
+        vertical-align: bottom;
+        cursor: pointer;
+    }
+
     .container-payList {
         display: inline;
     }
+
     .payList {
         width: 180px;
         float: right;
@@ -136,91 +145,85 @@
     }
 
         .container-warning h3 {
-            font-size: 9px;
+            font-size: 11px;
             color: #888888;
-            margin-top:
         }
 </style>
 <script>
     function copy(n) {
-        var t = document.getElementById(n).getElementsByTagName("h2")[0].innerText;
+        var t = document.getElementById(n).innerText;
         window.clipboardData.setData("Text", t);
         alert("주소가 복사 되었습니다.")
     }
 
     function get_rate(currency) {
         $.ajax({
-            url: ("/Payment/exchangerate?amount=1&currency_from=!&currency_to=usd&").replace('!', currency),
+            url: ("/Payment/exchangerate?amount=1&currency_from=!&currency_to=usd").replace('!', currency),
             success: function (res) {
-                alert('현재 1 ' + currency + ' 당 환율은 ' + res.estimated_amount + ' 원 입니다.');
+                alert('현재 1 ' + currency.toUpperCase() + ' 당 환율은 ' + res + '$ 입니다.');
+            }
+        });
+    }
+
+    function get_minimum(currency) {
+        $.ajax({
+            url: ("/Payment/minimum?amount=1&currency_from=!").replace('!', currency),
+            success: function (res) {
+                $("." + currency + "-minimum-amount").text("최소 입금 금액 : " + res.min_amount.toPrecision(4) + currency.toUpperCase());
             }
         });
     }
 
     $(document).ready(function () {
-        var walletURl = "/Payment/PayPost?currency=BTC";
-        $(".eth").css("display", "none");
-        $(".ltc").css("display", "none");
-        $(".xmr").css("display", "none");
+
+        @{
+            var first_coin = currencies.Keys.First();
+            foreach (var currencie in currencies)
+            {
+                @Html.Raw("$(\"." + currencie.Key + "\").css(\"display\", \"" + (currencie.Key.Equals(first_coin) ? "block" : "none") + "\");");
+            }
+        }
+        var walletURl = "/Payment/PayPost?currency=@first_coin&purchase_id=@ViewBag.Id&token=@ViewBag.Token";
+
+        $(".@first_coin .wallet").text("지갑주소를 불러오는 중...");
+        $(".@first_coin .@first_coin-hidden-wallet").val("1");
         $.ajax({
             url: walletURl,
             success: function (response) {
-                $(".btc .wallet").text(response.pay_address);
+                if (response == null) {
+                    $(".@first_coin .@first_coin-hidden-wallet").val("1");
+                    $(".@first_coin .wallet").text("지갑을 불러오는 도중 에러가 발생했습니다.");
+                    get_minimum('@first_coin');
+                } else {
+                    $(".@first_coin .@first_coin-hidden-wallet").val(response.pay_address);
+                    $(".@first_coin .wallet").text(response.pay_address);
+                get_minimum('@first_coin');
+                }
             }
         });
         $("#dropDownListItem").change(function () {
-            switch ($(this).val()) {
-                case "btc":
-                    $(".btc").css("display", "block");
-                    $(".eth").css("display", "none");
-                    $(".ltc").css("display", "none");
-                    $(".xmr").css("display", "none");
-                    break;
-                case "eth":
-                    $(".btc").css("display", "none");
-                    $(".eth").css("display", "block");
-                    $(".ltc").css("display", "none");
-                    $(".xmr").css("display", "none");
-                    var walletURl = "/Payment/PayPost?currency=eth";
-                    $.ajax({
-                        url: walletURl,
-                        success: function (response) {
-                            $(".eth .wallet").text(response.pay_address);
-                        }
-                    });
-                    break;
-                case "ltc":
-                    $(".btc").css("display", "none");
-                    $(".eth").css("display", "none");
-                    $(".ltc").css("display", "block");
-                    $(".xmr").css("display", "none");
-                    var walletURl = "/Payment/PayPost?currency=ltc";
-                    $.ajax({
-                        url: walletURl,
-                        success: function (response) {
-                            $(".ltc .wallet").text(response.pay_address);
-                        }
-                    });
-                    break;
-                case "xmr":
-                    $(".btc").css("display", "none");
-                    $(".eth").css("display", "none");
-                    $(".ltc").css("display", "none");
-                    $(".xmr").css("display", "block");
-                    var walletURl = "/Payment/PayPost?currency=xmr";
-                    $.ajax({
-                        url: walletURl,
-                        success: function (response) {
-                            $(".xmr .wallet").text(response.pay_address);
-                        }
-                    });
-                    break;
+            var value = $(this).val();
+            @{
+                @Html.Raw(sb.ToString());
+            }
+            if ($("." + value + " ." + value + "-hidden-wallet").val() == "") {
+                $("." + value + " .wallet").text("지갑주소를 불러오는 중...");
+                $("." + value + " ." + value + "-hidden-wallet").val("1");
+               var walletURl = "/Payment/PayPost?currency=" + value + "&purchase_id=@ViewBag.Id&token=@ViewBag.Token";
+                $.ajax({
+                    url: walletURl,
+                    success: function (response) {
+                        $("." + value + " ." + value + "-hidden-wallet").val(response.pay_address);
+                        $("." + value + " .wallet").text(response.pay_address);
+                        get_minimum("" + value + "");
+                    }
+                });
             }
         });
     });
 </script>
 <div>
-    <img src="~/images/header.png" style="margin:0px; display:block;" />
+    <img src="~/images/header.png" style="margin:0px; display:block; width: 508px" />
 </div>
 
 
@@ -232,22 +235,21 @@
     </div>
     @foreach (var currencie in currencies)
     {
-
         <div class="@currencie.Key" id="@currencie.Key">
             <div class="krM">
                 <h2 class="coinKrName">@currencie.Value </h2>
-                <h2 class="currencieText">전용 계좌</h2>
-                <h2 class="coinKrName">입금주소</h2>
+                <h2 class="currencieText">전용 계좌 </h2>
+                <h2 class="coinKrName"> 입금주소</h2>
             </div>
             <div id="walletAddressBox">
-                <h2 class="wallet" style="font-weight:bold">@(currencie.Key.Equals("btc") ? "지갑주소를 불러오는 중..." : "" )</h2>
+                <input type="hidden" class="@currencie.Key-hidden-wallet" value="" />
+                <h2 class="wallet" id="@currencie.Key-wallet" style="font-weight:bold">@(currencie.Key.Equals("btc") ? "지갑주소를 불러오는 중..." : "" )</h2>
             </div>
-            @*Html.Label("입금주소"): @Model.pay_address <br />
-                @Html.Label("통화"): @Model.pay_currency <br />
-                @Html.Label("결제요청시간"): @Model.created_at <br />
-                @Html.Label("결제상태"): @Model.payment_status*@
+            <div>
+                <h2 class="@currencie.Key-minimum-amount" id="minimum-amount" style="font-size: 11px; font-weight:lighter; color:#888888"></h2>
+            </div>
             <div class="container-btn" style="display: inline;">
-                <img id="btncopy" src="~/images/CopyAddress.png" style="margin:3px 1px 3px 7px; display:inline;" onclick="copy('@currencie.Key')" />
+                <img id="btncopy" src="~/images/CopyAddress.png" style="margin:3px 1px 3px 7px; display:inline;" onclick="copy('@currencie.Key-wallet')" />
                 <img id="btnrecharge" src="~/images/Recharge.png" style="margin:3px -3px 3px -3px; display:inline;" onclick="" />
                 <img id="btnexchange" src="~/images/ExchangeRate.png" style="margin:3px 0px 3px 0px; display:inline;" onclick="get_rate('@currencie.Key')" />
             </div>
@@ -255,13 +257,24 @@
     }
 </div>
 <div class="container-event">
-        <img id="event" src="~/images/eventimage.png" />
+    <img id="event" src="~/images/eventimage.png" />
 </div>
 <div class="container-cash" style="text-align: center;">
-    <h2>현재 보유한 캐시 금액은 0원 입니다.</h2>
+    @{
+        var info = MapleStorage.GetValue(ViewBag.Id);
+        if (info != null)
+        {
+        <h2>현재 보유한 캐시 금액은 @String.Format("{0:#,0}", info.Cash) 원 입니다.</h2>
+        }
+        else
+        {
+            <h2>현재 보유한 캐시 금액은 0 원 입니다.</h2>
+        }
+    }
 </div>
 <div class="container-warning">
     <h3>* 전용 지갑은 회원님에게 각각 부여되는 가상의 지갑으로 비트코인을</h3>
-    <h3>전용 계좌로 입금하시면 회원님의 아이디로 캐시가 충전됩니다.</h3>  
-    <h3 style="color:#6694b2; font-weight:bold;">* 거래소 시스템 사정으로 인해 입금 후 충전 완료까지 시간이 소요될 수 있습니다.</h3>
+    <h3>전용 계좌로 입금하시면 회원님의 아이디로 캐시가 충전됩니다.</h3>
+    <h3 style="color:#6694b2; font-weight:bold; font-size: 12px">* 거래소 시스템 사정으로 인해 입금 후 충전 완료까지 시간이 소요될 수 있습니다.</h3>
+    <h3 style="color:#6694b2; font-weight:bold; font-size: 12px">* 최소 입금 금액 미달 시 코인이 유실될 수 있습니다.</h3>
 </div>

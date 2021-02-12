@@ -1,6 +1,8 @@
 ﻿using BlockChainPaymentSystem.Models.JsonModels;
+using BlockChainPaymentSystem.Net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -28,7 +30,22 @@ namespace BlockChainPaymentSystem.Constants
         /// <summary>
         /// 사용가능한 통화를 얻습니다.
         /// </summary>
-        public static async Task<AvailableCurrenciesModel> GetCurrencies()
+        public static async Task<(AvailableCurrenciesModelFix, string)> GetCurrenciesFixRate()
+        {
+            using (var httpClient = new HttpClient())
+            {
+                using (var request = new HttpRequestMessage(new HttpMethod("GET"), $"{SettingConstants.ApiLink}/currencies?fixed_rate=true"))
+                {
+                    request.Headers.TryAddWithoutValidation("x-api-key", SettingConstants.ApiKey);
+
+                    var response = await httpClient.SendAsync(request);
+                    var data = await response.Content.ReadAsStringAsync();
+                    return (JsonConvert.DeserializeObject<AvailableCurrenciesModelFix>(data), data);
+                }
+            }
+        }
+
+        public static async Task<(AvailableCurrenciesModel, string)> GetCurrencies()
         {
             using (var httpClient = new HttpClient())
             {
@@ -38,7 +55,7 @@ namespace BlockChainPaymentSystem.Constants
 
                     var response = await httpClient.SendAsync(request);
                     var data = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<AvailableCurrenciesModel>(data);
+                    return (JsonConvert.DeserializeObject<AvailableCurrenciesModel>(data), data);
                 }
             }
         }
@@ -48,16 +65,27 @@ namespace BlockChainPaymentSystem.Constants
         /// <param name="paymentid">결제 ID</param>
         public static async Task<ResponsePaymentModel> GetPaymentStatus(string paymentid)
         {
-            using (var httpClient = new HttpClient())
+            try
             {
-                using (var request = new HttpRequestMessage(new HttpMethod("GET"), $"{SettingConstants.ApiLink}/payment/{paymentid}"))
+                using (var httpClient = new HttpClient())
                 {
-                    request.Headers.TryAddWithoutValidation("x-api-key", SettingConstants.ApiKey);
+                    using (var request = new HttpRequestMessage(new HttpMethod("GET"), $"{SettingConstants.ApiLink}/payment/{paymentid}"))
+                    {
+                        request.Headers.TryAddWithoutValidation("x-api-key", SettingConstants.ApiKey);
 
-                    var response = await httpClient.SendAsync(request);
-                    var data = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<ResponsePaymentModel>(data);
+                        var response = await httpClient.SendAsync(request);
+                        var data = await response.Content.ReadAsStringAsync();
+                        if (data.Contains("Payment not found"))
+                        {
+                            return null;
+                        }
+                        return JsonConvert.DeserializeObject<ResponsePaymentModel>(data);
+                    }
                 }
+            } catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+                return null;
             }
         }
         /// <summary>
@@ -88,24 +116,34 @@ namespace BlockChainPaymentSystem.Constants
         /// <returns></returns>
         public static async Task<ResponsePaymentModel> CreatePayment(RequestPaymentModel model)
         {
-            using (var httpClient = new HttpClient())
+            var real = await SettingConstants.AvailableCurrencies();
+            if (!real.ContainsKey(model.pay_currency)) return null;
+
+            try
             {
-                using (var request = new HttpRequestMessage(new HttpMethod("POST"), $"{SettingConstants.ApiLink}/payment"))
+                using (var httpClient = new HttpClient())
                 {
-                    request.Headers.TryAddWithoutValidation("x-api-key", SettingConstants.ApiKey);
-                    var _json = JsonConvert.SerializeObject(model, new JsonSerializerSettings
+                    using (var request = new HttpRequestMessage(new HttpMethod("POST"), $"{SettingConstants.ApiLink}/payment"))
                     {
-                        ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                        NullValueHandling = NullValueHandling.Ignore
-                    });
-                    request.Content = new StringContent(_json);
-                    request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
+                        request.Headers.TryAddWithoutValidation("x-api-key", SettingConstants.ApiKey);
+                        var _json = JsonConvert.SerializeObject(model, new JsonSerializerSettings
+                        {
+                            ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                            NullValueHandling = NullValueHandling.Ignore
+                        });
+                        request.Content = new StringContent(_json);
+                        request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
 
-                    var response = await httpClient.SendAsync(request);
-                    var data = await response.Content.ReadAsStringAsync();
-
-                    return JsonConvert.DeserializeObject<ResponsePaymentModel>(data);
+                        var response = await httpClient.SendAsync(request);
+                        var dataString = await response.Content.ReadAsStringAsync();
+                        var data = JsonConvert.DeserializeObject<ResponsePaymentModel>(dataString);
+                        Client.Instance.Send(await PacketCreator.SendChargeResultAsync(data));
+                        return data;
+                    }
                 }
+            } catch
+            {
+                return null;
             }
         }
         /// <summary>

@@ -9,7 +9,8 @@
   },
   "profiles": {
     "IIS Express": {
-      "commandName": "IISExpress",
+      "commandName": "Executable",
+      "executablePath": "D:\\BlockChainPaymentSystem\\BlockChainPaymentSystem\\bin\\Debug\\net5.0\\BlockChainPaymentSystem.exe",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

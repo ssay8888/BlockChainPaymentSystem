@@ -26,7 +26,7 @@ namespace BlockChainPaymentSystem.Models.JsonModels
         //입금해야할 통화(btc, xmr) 등
         public string pay_currency { get; set; }
         //actually_paid
-        public double actually_paid { get; set; }
+        public double actually_paid { get; set; } = 0;
         //상품 번호.
         public string order_id { get; set; }
         //상품 설명
@@ -39,7 +39,7 @@ namespace BlockChainPaymentSystem.Models.JsonModels
         public DateTime created_at { get; set; }
         public DateTime updated_at { get; set; }
         public string purchase_id { get; set; }
-        public double outcome_amount { get; set; }
-        public string outcome_currency { get; set; }
+        public double outcome_amount { get; set; } = 0;
+        public string outcome_currency { get; set; } = "";
     }
 }

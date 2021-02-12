@@ -1,3 +1,6 @@
+using BlockChainPaymentSystem.Constants.CultureCommon;
+using BlockChainPaymentSystem.Net;
+using BlockChainPaymentSystem.Net.Packet;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -13,6 +16,9 @@ namespace BlockChainPaymentSystem
     {
         public static void Main(string[] args)
         {
+            var asd = Client.Instance.ConnectAsync();
+            CultureStorage.ChargeTask();
+            ServerPackets.RegisterPackets();
             CreateHostBuilder(args).Build().Run();
         }
 
@@ -27,7 +33,7 @@ namespace BlockChainPaymentSystem
             webBuilder.UseStartup<Startup>();
             webBuilder.ConfigureKestrel(serverOptions =>
             {
-                serverOptions.ListenAnyIP(8484);
+                serverOptions.ListenAnyIP(5454);
             });
         });
     }

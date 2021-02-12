@@ -1,0 +1,27 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+
+<script>
+    var a = 0;
+    var startAlert = function () {
+        playAlert = setInterval(function () {
+            $(".test").text("시발" + ++a);
+        }, 1000);
+    };
+
+    var stopAlert = function () {
+        clearInterval(playAlert);
+    };
+    $(document).ready(function () {
+        startAlert();
+    });
+</script>
+
+<div>
+    <h2 class="test">잠시만 기다려주세요.. 확인중에있습니다.</h2>
+</div>
